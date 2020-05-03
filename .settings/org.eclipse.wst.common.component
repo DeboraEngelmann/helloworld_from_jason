@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+	<wb-module deploy-name="helloworld_from_jason">
+		<property name="context-root" value="helloworld_from_jason"/>
+		<wb-resource deploy-path="/WEB-INF/classes" source-path="src/env"/>
+		<wb-resource deploy-path="/WEB-INF/classes" source-path="src/agt"/>
+	</wb-module>
+</project-modules>

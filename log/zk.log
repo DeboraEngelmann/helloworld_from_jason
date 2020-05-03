@@ -1,0 +1,17 @@
+2020-05-03 00:04:56,446 WARN  [NIOServerCnxn] Exception causing close of session 0x1000091a56d0000: Foi forçado o cancelamento de uma conexão existente pelo host remoto
+2020-05-03 00:04:56,447 WARN  [ClientCnxn] Session 0x1000091a56d0000 for server 192.168.56.1/192.168.56.1:2181, unexpected error, closing socket connection and attempting reconnect
+java.io.IOException: Foi forçado o cancelamento de uma conexão existente pelo host remoto
+	at sun.nio.ch.SocketDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:380)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doIO(ClientCnxnSocketNIO.java:75)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:363)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1214)
+2020-05-03 00:05:00,562 WARN  [ConnectionStateManager] Session timeout has elapsed while SUSPENDED. Injecting a session expiration. Elapsed ms: 4001. Adjusted session timeout ms: 4000
+2020-05-03 00:05:00,567 WARN  [ConnectionStateManager] Session timeout has elapsed while SUSPENDED. Injecting a session expiration. Elapsed ms: 4005. Adjusted session timeout ms: 4000
+2020-05-03 00:05:00,567 WARN  [ConnectionState] Session expired event received
+2020-05-03 00:05:00,568 WARN  [ConnectionStateManager] Session timeout has elapsed while SUSPENDED. Injecting a session expiration. Elapsed ms: 4006. Adjusted session timeout ms: 4000
+2020-05-03 00:05:00,574 WARN  [ConnectionState] Session expired event received
+2020-05-03 00:06:54,261 WARN  [NIOServerCnxn] Exception causing close of session 0x0: Len error 1347375956
