@@ -6,14 +6,14 @@
 	.
 	
 +!responder(Req)
-	: (Req == "callJasonAgent")
+	: (Req == callJasonAgent)
 <-
-	+response("Olá, eu sou seu agente Jason, em que posso lhe ajudar?");
+	reply("Olá, eu sou seu agente Jason, em que posso lhe ajudar?");
 	.
 +!responder(Req)
 	: true
 <-
-	+response("Desculpe, não reconheço essa intenção");
+	reply("Desculpe, não reconheço essa intenção");
 	.
 	
 +!hello

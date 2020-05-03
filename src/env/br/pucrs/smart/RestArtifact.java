@@ -57,10 +57,7 @@ public class RestArtifact extends DefaultPlatformImpl {
     
     @Override
     public void init(String[] args) throws Exception {
-        
-        // change the runtimeservices
-//        RuntimeServicesFactory.set( new JCMRuntimeServices() );
-                
+                        
         int restPort = 3280;
         int zkPort   = 2181;
         boolean useZK = false;
@@ -131,14 +128,6 @@ public class RestArtifact extends DefaultPlatformImpl {
 
         if (zkClient != null)
             zkClient.close();
-        
-        /*if (zkTmpDir != null) {
-            try {
-                FileUtils.deleteDirectory(zkTmpDir);
-            } catch (IOException e) {
-            }
-            zkTmpDir = null;
-        }*/
     }
     
     static void confLog4j() {
@@ -201,7 +190,6 @@ public class RestArtifact extends DefaultPlatformImpl {
             zkHost = InetAddress.getLocalHost().getHostAddress()+":"+port;
 
             zkTmpDir = Files.createTempDirectory(zkTmpFileName).toFile(); 
-            //System.out.println("ZK data at "+zkTmpDir);
             ZooKeeperServer server = new ZooKeeperServer(zkTmpDir, zkTmpDir, tickTime);
             server.setMaxSessionTimeout(4000);
             
@@ -209,12 +197,8 @@ public class RestArtifact extends DefaultPlatformImpl {
             factory.configure(new InetSocketAddress(port), numConnections);
             factory.startup(server); // start the server.   
 
-            // create main nodes
-            //client.delete().deletingChildrenIfNeeded().forPath("/jacamo");
-            //client.create().forPath("/jacamo");
             getZKClient().create().creatingParentsIfNeeded().forPath(JaCaMoZKAgNodeId);
             getZKClient().create().creatingParentsIfNeeded().forPath(JaCaMoZKDFNodeId);
-            //client.close();
             return factory;
         } catch (java.net.BindException e) {
             System.err.println("Cannot start zookeeper, port "+port+" already used!");
@@ -243,117 +227,5 @@ public class RestArtifact extends DefaultPlatformImpl {
         }
         return zkClient;
     }
-    
-//    class JCMRuntimeServices extends DelegatedRuntimeServices {
-//        public JCMRuntimeServices() {
-//            super(RuntimeServicesFactory.get());
-//        }
-//
-//        @Override
-//        public void dfRegister(String agName, String service, String type) {
-//            try {
-//                if (type == null) type = "no-type";
-//                String node = RestArtifact.JaCaMoZKDFNodeId+"/"+service+"/"+agName;
-//                if (getZKClient().checkExists().forPath(node) == null) {
-//                    getZKClient().create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(node, type.getBytes());
-//                } else {
-//                    getZKClient().setData().forPath(node, type.getBytes());
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        
-//        @Override
-//        public void dfDeRegister(String agName, String service, String type) {
-//            try {
-//                getZKClient().delete().forPath(RestArtifact.JaCaMoZKDFNodeId+"/"+service+"/"+agName);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        
-//        @Override
-//        public Collection<String> dfSearch(String service, String type) {
-//            Set<String> ags = new HashSet<>();
-//            try {
-//                if (getZKClient().checkExists().forPath(RestArtifact.JaCaMoZKDFNodeId+"/"+service) != null) {
-//                    for (String r : getZKClient().getChildren().forPath(RestArtifact.JaCaMoZKDFNodeId+"/"+service)) {
-//                        ags.add(r);
-//                    }
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            return ags;
-//        }
-//        
-//        @Override
-//        public void dfSubscribe(String agName, String service, String type) {
-//            try {
-//                RestAgArch arch = getRestAgArch(agName); 
-//                arch.getAsyncCurator()
-//                    .with(WatchMode.successOnly).watched().getChildren().forPath(RestArtifact.JaCaMoZKDFNodeId+"/"+service).event().thenAccept(event -> {
-//                        try {
-//                            //System.out.println("something changed...."+event.getType()+"/"+event.getState());
-//                            // stupid implementation: send them all again and
-//                            dfSubscribe(agName, service, type); // keep watching
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    });
-//
-//                // update providers
-//                Term s = new Atom("df");
-//                Literal l = ASSyntax.createLiteral("provider", new UnnamedVar(), new StringTermImpl(service));
-//                l.addSource(s);
-//                arch.getTS().getAg().abolish(l, new Unifier());
-//                for (String a: dfSearch(service, type)) {
-//                    l = ASSyntax.createLiteral("provider", new Atom(a), new StringTermImpl(service));
-//                    l.addSource(s);
-//                    arch.getTS().getAg().addBel(l);
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        
-//        
-//        @Override
-//        public Collection<String> getAgentsNames() {
-//            // use ZK WP
-//            try {
-//                List<String> all = new ArrayList<>();
-//                for (String ag : getZKClient().getChildren().forPath(RestArtifact.JaCaMoZKAgNodeId)) {
-//                    all.add(ag);
-//                }
-//                return all;
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return super.getAgentsNames();
-//            }
-//        }
-//        
-//        @Override
-//        public Map<String, Set<String>> getDF() {
-//            if (getZKHost() == null) {
-//                return super.getDF();
-//            } else {
-//                try {
-//                    Map<String, Set<String>> commonDF = new HashMap<String, Set<String>>();
-//
-//                    for (String s : getZKClient().getChildren().forPath(RestArtifact.JaCaMoZKDFNodeId)) {
-//                        for (String a : getZKClient().getChildren().forPath(RestArtifact.JaCaMoZKDFNodeId + "/" + s)) {
-//                            commonDF.computeIfAbsent(a, k -> new HashSet<>()).add(s);
-//                        }
-//                    }
-//                    return commonDF;
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    return null;
-//                }
-//            }
-//        }                   
-//    }
 
 }

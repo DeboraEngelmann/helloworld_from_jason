@@ -37,14 +37,14 @@ public class RestImpl extends AbstractBinder {
     public Response createNewAgent(String request) {
         try {
         	RequestDialogflow requestDialogflow = gson.fromJson(request, RequestDialogflow.class);
-        	System.out.println("Agent comunicado: " +  gson.toJson(requestDialogflow)); 
+        	System.out.println("Agente comunicado: " +  gson.toJson(requestDialogflow)); 
         	if (mas != null) {
-        		ResponseDialogflow responseDialogflow = mas.processarIntencao(requestDialogflow.getResponseId(),requestDialogflow.getQueryResult().getIntent().getDisplayName());
-                return Response.ok(gson.toJson(responseDialogflow)).build();
+        		ResponseDialogflow ResponseDialogflow = mas.processarIntencao(requestDialogflow.getResponseId(),requestDialogflow.getQueryResult().getIntent().getDisplayName());
+                return Response.ok(gson.toJson(ResponseDialogflow)).build();
         	} else {
-        		ResponseDialogflow responseDialogflow = new ResponseDialogflow();   
-            	responseDialogflow.setFulfillmentText("Desculpe, não foi possível encontrar o agente Jason");
-            return Response.ok(gson.toJson(responseDialogflow)).build();
+        		ResponseDialogflow ResponseDialogflow = new ResponseDialogflow();   
+            	ResponseDialogflow.setFulfillmentText("Desculpe, NÃ£o foi possÃ­vel encontrar o agente Jason");
+            return Response.ok(gson.toJson(ResponseDialogflow)).build();
         	}
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,7 +4,6 @@ package br.pucrs.smart;
 
 import java.util.logging.Logger;
 
-import br.pucrs.smart.integration.MyActionsApp;
 import br.pucrs.smart.interfaces.IAgent;
 import br.pucrs.smart.models.ResponseDialogflow;
 import cartago.*;
@@ -12,57 +11,59 @@ import jason.asSyntax.Literal;
 
 public class IntegrationArtifact extends Artifact implements IAgent {
 	private Logger logger = Logger.getLogger("ArtefatoIntegracao." + IntegrationArtifact.class.getName());
+	String jasonResponse = null;
 
-	MyActionsApp dialog;
-	
 	void init() {
 		RestImpl.setListener(this);
 		defineObsProperty("teste", Literal.parseLiteral("Call Jason Agent"));
 	}
-	
+
 	@INTERNAL_OPERATION
-	void defineObsProperty() {
-		defineObsProperty("request", Literal.parseLiteral("callJasonAgent"));
+	void defineRequest(String obsProperty) {
+		defineObsProperty("request", Literal.parseLiteral(obsProperty));
 	}
-	
-//	@INTERNAL_OPERATION
-//	ObsProperty getObsProperty() {
-//		return getObsProperty("response");
-//	}
-	
+
+	@OPERATION
+	void reply(String response) {
+		this.jasonResponse = response;
+	}
+
 	@Override
 	public ResponseDialogflow processarIntencao(String sessionId, String request) {
-		
+
 		ResponseDialogflow response = new ResponseDialogflow();
 		System.out.println("recebido evento: " + sessionId);
-		System.out.println("IntenÁ„o: " + request);
+		System.out.println("Inten√ß√£o: " + request);
 		if (request != null) {
 			switch (request) {
 			case "Call Jason Agent":
-				execInternalOp("defineObsProperty");
-				break;				
+				execInternalOp("defineRequest", "callJasonAgent");
+				break;
 			default:
-				defineObsProperty("request", Literal.parseLiteral("default"));
+				execInternalOp("defineRequest", "default");
 				break;
 			}
-			System.out.println("Definindo propriedade observ·vel");
+			System.out.println("Definindo propriedade observ√°vel");
 		} else {
-//			execInternalOp("teste", sessionId, request);
-			System.out.println("N„o foi possÌvel definir propriedade observ·vel");
-			response.setFulfillmentText("IntenÁ„o n„o reconhecida");
+			System.out.println("N√£o foi poss√≠vel definir a propriedade observ√°vel");
+			response.setFulfillmentText("Inten√ß√£o n√£o reconhecida");
 		}
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+
+		int i = 0;
+		while (this.jasonResponse == null && i <= 200) {
+			try {
+				Thread.sleep(10);
+				i++;
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-		
-		ObsProperty prop = getObsProperty("response");
-		if (prop != null) {
-			System.out.println("Prop " + prop.stringValue());
-			response.setFulfillmentText(prop.stringValue());
+		if (this.jasonResponse != null) {
+			System.out.println("jasonResponse " + this.jasonResponse);
+			response.setFulfillmentText(this.jasonResponse);
+			this.jasonResponse = null;
 		} else {
-			System.out.println("Sem prop");
+			System.out.println("Sem jasonResponse");
 			response.setFulfillmentText("Sem resposta do agente");
 		}
 		return response;

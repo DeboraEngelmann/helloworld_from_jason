@@ -1,18 +1,12 @@
 plugins {
     id 'java'
     id 'eclipse'
-//    id 'war'
-//    id 'org.gretty' version '3.0.2' 
 }
 
 repositories {
-//	jcenter()
     mavenCentral()
 
     maven { url "http://jacamo.sourceforge.net/maven2" }  
-    //maven { url "https://jade.tilab.com/maven/"}
-    
-//    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -44,18 +38,8 @@ dependencies {
 
 	compile 'com.google.code.gson:gson:2.8.5'
 		
-//	providedCompile 'javax.servlet:javax.servlet-api:3.1.0'	
-//	compile group: 'org.slf4j', name: 'slf4j-api', version: '2.0.0-alpha1'
-//	testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.0-alpha1'
-	
-//	providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version: '2.0'
-//	providedCompile 'javax.servlet:javax.servlet-api:3.1.0' 
-//	runtime 'javax.servlet:jstl:1.2'
 }
 
-//gretty {
-//    contextPath = '/'    
-//}
 
 task run (type: JavaExec, dependsOn: 'classes') {
     description 'runs the application'
