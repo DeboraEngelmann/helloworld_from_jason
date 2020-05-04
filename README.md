@@ -1,6 +1,10 @@
 # Jason + Chatbots
 
-By [Débora Engelmann](https://github.com/DeboraEngelmann)
+By [Débora Engelmann](https://github.com/DeboraEngelmann), 
+[Juliana Damasio Oliveira](https://github.com/julianadamasio), 
+[Olimar Teixeira Borges](https://github.com/olimarborges), 
+[Tabajara Krausburg](https://github.com/TabajaraKrausburg) e 
+[Marivaldo Vivan](https://github.com/Vivannaboa)
 
 Você precisará ter instalado em seu computador:
 
