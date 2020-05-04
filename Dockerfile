@@ -23,4 +23,4 @@ WORKDIR /app
 
 ENTRYPOINT [ "gradle", "run" ]
 
-CMD ["bash"]
+CMD []

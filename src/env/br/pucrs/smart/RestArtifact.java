@@ -159,7 +159,7 @@ public class RestArtifact extends DefaultPlatformImpl {
     
     public HttpServer startRestServer(int port) {
         try {
-            restServerURI = UriBuilder.fromUri("http://"+InetAddress.getLocalHost().getHostAddress()+"/").port(port).build();
+            restServerURI = UriBuilder.fromUri("http://0.0.0.0/").port(port).build();
             
             RestAppConfig rc = new RestAppConfig();
             
