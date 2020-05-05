@@ -203,7 +203,7 @@ docker tag chatbot-integration gcr.io/<YourProjectId>/chatbot-integration
 ```
 Para subir a imagem para o GCP use o comando a seguir.  
 ```
-docker push gcr.io/integration-example-nymoic/chatbot-integration
+docker push gcr.io/<YourProjectId>/chatbot-integration
 ```
 
 Acesse https://console.cloud.google.com/ (confira se o projeto está selecionado corretamente). No menú lateral selecione a opção `Container Registry`.

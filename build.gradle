@@ -53,8 +53,7 @@ sourceSets {
     main {
         java {
             srcDir 'src/env'
-            srcDir 'src/agt'    
-            srcDir 'src/main'   
+            srcDir 'src/agt'
         }
     }
 }

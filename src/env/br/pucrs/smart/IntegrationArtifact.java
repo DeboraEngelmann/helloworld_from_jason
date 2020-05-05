@@ -15,12 +15,11 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 
 	void init() {
 		RestImpl.setListener(this);
-		defineObsProperty("teste", Literal.parseLiteral("Call Jason Agent"));
 	}
 
 	@INTERNAL_OPERATION
 	void defineRequest(String obsProperty) {
-		defineObsProperty("request", Literal.parseLiteral(obsProperty));
+		defineObsProperty("request", obsProperty);
 	}
 
 	@OPERATION
@@ -35,20 +34,12 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 		System.out.println("recebido evento: " + sessionId);
 		System.out.println("Intenção: " + request);
 		if (request != null) {
-			switch (request) {
-			case "Call Jason Agent":
-				execInternalOp("defineRequest", "callJasonAgent");
-				break;
-			default:
-				execInternalOp("defineRequest", "default");
-				break;
-			}
+			execInternalOp("defineRequest", request);
 			System.out.println("Definindo propriedade observável");
 		} else {
 			System.out.println("Não foi possível definir a propriedade observável");
 			response.setFulfillmentText("Intenção não reconhecida");
 		}
-
 		int i = 0;
 		while (this.jasonResponse == null && i <= 200) {
 			try {

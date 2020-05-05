@@ -6,7 +6,7 @@
 	.
 	
 +!responder(Req)
-	: (Req == callJasonAgent)
+	: (Req == "Call Jason Agent")
 <-
 	reply("Olá, eu sou seu agente Jason, em que posso lhe ajudar?");
 	.
