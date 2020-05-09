@@ -1,3 +1,9 @@
+/*
+	Arquivo original: https://github.com/jacamo-lang/jacamo-rest/blob/master/src/main/java/jacamo/rest/RestImpl.java
+	Alterado por: Débora Engelmann
+	03 de Maio de 2020
+*/
+
 package br.pucrs.smart;
 
 import javax.inject.Singleton;
