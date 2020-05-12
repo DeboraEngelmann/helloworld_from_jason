@@ -6,7 +6,8 @@ plugins {
 repositories {
     mavenCentral()
 
-    maven { url "http://jacamo.sourceforge.net/maven2" }  
+    maven { url "http://jacamo.sourceforge.net/maven2" }
+    maven { url "https://repo.gradle.org/gradle/libs-releases-local" }
 }
 
 dependencies {
