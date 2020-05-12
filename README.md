@@ -6,6 +6,8 @@ By [Débora Engelmann](https://github.com/DeboraEngelmann),
 [Tabajara Krausburg](https://github.com/TabajaraKrausburg) e 
 [Marivaldo Vivan](https://github.com/Vivannaboa)
 
+**Parte do código utilizado nesse projeto é de autoria de [Jomi F. Hubner](https://github.com/jomifred) e [Cleber Jorge Amaral](https://github.com/cleberjamaral) Disponível em [JaCaMo-Rest](https://github.com/jacamo-lang/jacamo-rest).**
+
 Você precisará ter instalado em seu computador:
 
 [Git](https://git-scm.com/downloads), 
