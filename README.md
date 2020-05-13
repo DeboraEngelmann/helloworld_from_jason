@@ -77,7 +77,7 @@ O `MAS Console` será aberto. Copie o endereço em que o `JaCaMo Rest API` está
 
 ![](src/resources/img/masConsole.png)
 
-Abra o `Postman` selecione o tipo `POST` e cole o endereço do `JaCaMo Rest API` na barra de endereço. 
+Abra o `Postman` em `create a request` selecione o tipo `POST` e cole o endereço do `JaCaMo Rest API` na barra de endereço. 
 Na aba `Body` selecione o tipo `raw` e arquivo do tipo `JSON`, e cole o seguinte código no corpo da requisição:
 
 ```
