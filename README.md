@@ -278,7 +278,7 @@ Se ainda não tiver uma, crie uma pasta `lib` na raiz do seu projeto.
 
 ![](src/resources/img/folderLib.png)
 
-Baixe esse arquivo [Models.jar](https://github.com/DeboraEngelmann/helloworld_from_jason/tree/master/src/resources) e salve na pasta `lib`.
+Baixe esse arquivo [Models.jar](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/resources/Models.jar) e salve na pasta `lib`.
 
 Clique em cima do arquivo com o botão direito e selecione `Build Path/Add to Build Path`.
 
@@ -395,7 +395,9 @@ Em `src/env` crie um novo pacote com o nome `br.pucrs.smart`
 
 Baixe as classes a seguir e coloque no pacote recém criado:
 
-- <a href="/src/env/br/pucrs/smart/IntegrationArtifact.java" download>IntegrationArtifact.java</a>
+**Ao invés de baixar uma classe por vez, você pode baixar todas as classes citadas a seguir compactadas neste arquivo [classes.zip](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/resources/classes.zip) e descompactá-lo para obter as classes transferindo-as para a pasta `src/br/pucrs/smart`**
+
+- [IntegrationArtifact.java](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/env/br/pucrs/smart/IntegrationArtifact.java)
 - [RestAppConfig.java](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/env/br/pucrs/smart/RestAppConfig.java)
 - [RestArtifact.java](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/env/br/pucrs/smart/RestArtifact.java)
 - [RestImpl.java](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/env/br/pucrs/smart/RestImpl.java)
@@ -460,7 +462,7 @@ Para rodar o projeto, abra a pasta do projeto no terminal e digite o comando `gr
 ![](src/resources/img/terminal.png)
 
 Caso queira criar imagens Docker apartir dessa aplicação crie na raiz do projeto um novo arquivo chamado `Dockerfile` e coloque nele o código a seguir.  
-**O processo para a criação da imagem é o mesmo**
+**O processo para a criação da imagem é o mesmo que consta em [Criando imagem Docker](#criando-imagem-docker)**
 
 ```
 FROM alpine
