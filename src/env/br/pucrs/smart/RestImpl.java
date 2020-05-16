@@ -45,7 +45,10 @@ public class RestImpl extends AbstractBinder {
         	RequestDialogflow requestDialogflow = gson.fromJson(request, RequestDialogflow.class);
         	System.out.println("Agente comunicado: " +  gson.toJson(requestDialogflow)); 
         	if (mas != null) {
-        		ResponseDialogflow ResponseDialogflow = mas.processarIntencao(requestDialogflow.getResponseId(),requestDialogflow.getQueryResult().getIntent().getDisplayName());
+        		ResponseDialogflow ResponseDialogflow = mas.processarIntencao(requestDialogflow.getResponseId(),
+        																	  requestDialogflow.getQueryResult().getIntent().getDisplayName(),
+        																	  requestDialogflow.getQueryResult().getParameters(),
+        																	  requestDialogflow.getQueryResult().getOutputContexts());
                 return Response.ok(gson.toJson(ResponseDialogflow)).build();
         	} else {
         		ResponseDialogflow ResponseDialogflow = new ResponseDialogflow();   

@@ -8,6 +8,7 @@ repositories {
 
     maven { url "http://jacamo.sourceforge.net/maven2" }
     maven { url "https://repo.gradle.org/gradle/libs-releases-local" }
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -38,6 +39,8 @@ dependencies {
 	
 
 	compile 'com.google.code.gson:gson:2.8.5'
+	
+	implementation 'com.github.eishub:eis:v0.6.2'
 		
 }
 

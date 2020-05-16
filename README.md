@@ -28,6 +28,7 @@ Você precisará ter instalado em seu computador:
 3. [Criando imagem Docker](#criando-imagem-docker)
 4. [Configurando projeto GCP e subindo aplicação](#configurando-projeto-gcp-e-subindo-aplicação)
 5. [Criando intenção e configurando fulfillment no Dialogflow](#criando-intenção-e-configurando-fulfillment-no-dialogflow)
+6. [Incluindo a integração no seu projeto JaCaMo existente](#incluindo-a-integração-no-seu-projeto-jacamo-existente)
 
 ## Baixando e configurando projeto de integração
 
@@ -268,3 +269,226 @@ Agora podemos utilizar uma das frases de trinamento cadastradas na nossa intenç
 #### Links Úteis:
 - https://cloud.google.com/dialogflow/docs/quick/fulfillment
 - https://cloud.google.com/dialogflow/docs/fulfillment-overview
+
+## Incluindo a integração no seu projeto JaCaMo existente
+
+Se ainda não tiver uma, crie uma pasta `lib` na raiz do seu projeto.
+
+![](src/resources/img/newPath.png)
+
+![](src/resources/img/folderLib.png)
+
+Baixe esse arquivo [Models.jar](https://github.com/DeboraEngelmann/helloworld_from_jason/tree/master/src/resources) e salve na pasta `lib`.
+
+Clique em cima do arquivo com o botão direito e selecione `Build Path/Add to Build Path`.
+
+![](src/resources/img/modelsToBuildPath.png)
+
+Crie um novo arquivo na raiz do projeto chamado `build.gradle` 
+
+![](src/resources/img/newFile.png)
+
+e adicione nesse arquivo o seguinte código:
+
+```
+plugins {
+    id 'java'
+    id 'eclipse'
+}
+
+repositories {
+    mavenCentral()
+
+    maven { url "http://jacamo.sourceforge.net/maven2" }
+    maven { url "https://repo.gradle.org/gradle/libs-releases-local" }
+    maven { url "https://jitpack.io" }
+    
+    flatDir {
+       dirs 'lib'
+    }
+}
+
+dependencies {
+	compile group: 'org.jacamo' , name: 'jacamo'   , version: '0.9-SNAPSHOT'  , changing: true , transitive: true
+
+	compile 'org.jason-lang:jason:2.5-SNAPSHOT'
+	compile 'javax.xml.bind:jaxb-api:+'
+	
+		
+	compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.29.1'
+	compile 'org.glassfish.jersey.containers:jersey-container-servlet-core:2.29.1'
+	compile 'org.glassfish.jersey.inject:jersey-hk2:2.29.1'
+	compile group: 'org.glassfish.jersey', name: 'jersey-bom', version: '2.29.1', ext: 'pom'
+
+	compile 'org.glassfish.jersey.core:jersey-server:2.29.1'
+	compile 'org.glassfish.jersey.core:jersey-client:2.29.1'
+	compile 'org.glassfish.jersey.media:jersey-media-multipart:2.29.1'
+
+	compile 'org.glassfish.jersey.media:jersey-media-json-jackson:2.29.1'
+
+	// containers:
+	compile 'org.glassfish.jersey.containers:jersey-container-grizzly2-http:2.29.1'
+	compile 'org.glassfish.grizzly:grizzly-http-server:2.4.4'
+	
+	compile 'org.apache.zookeeper:zookeeper:3.5.4-beta'
+	compile 'org.apache.curator:curator-framework:4.0.1'
+	compile 'org.apache.curator:curator-x-async:4.0.1'
+	
+
+	compile 'com.google.code.gson:gson:2.8.5'
+	
+	implementation 'com.github.eishub:eis:v0.6.2'
+	
+	implementation files('lib/Models.jar')
+		
+}
+
+
+task run (type: JavaExec, dependsOn: 'classes') {
+    description 'runs the application'
+    group ' JaCaMo'
+    main = 'jacamo.infra.JaCaMoLauncher'
+    args 'my_jacamo_project.jcm'
+    classpath sourceSets.main.runtimeClasspath
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/env'
+            srcDir 'src/agt'
+        }
+    }
+}
+
+}
+
+
+task run (type: JavaExec, dependsOn: 'classes') {
+    description 'runs the application'
+    group ' JaCaMo'
+    main = 'jacamo.infra.JaCaMoLauncher'
+    args '<yourJcmFile>.jcm'
+    classpath sourceSets.main.runtimeClasspath
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/env'
+            srcDir 'src/agt'
+        }
+    }
+}
+
+```
+
+Substitua `<yourJcmFile>.jcm` pelo nome do seu arquivo `.jcm`.  
+Agora, clique no projeto com o botão direito e selecione `Configure/Add Gradle Nature` para que o eclipse entenda que precisa importar as classes do gradle.  
+Ele pode levar algum tempo para sincronizar.
+
+![](src/resources/img/addGradleNature.png)
+
+Em `src/env` crie um novo pacote com o nome `br.pucrs.smart`
+
+![](src/resources/img/newPackage.png)
+
+Baixe as classes a seguir e coloque no pacote recém criado:
+
+- <a href="/src/env/br/pucrs/smart/IntegrationArtifact.java" download>IntegrationArtifact.java</a>
+- [RestAppConfig.java](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/env/br/pucrs/smart/RestAppConfig.java)
+- [RestArtifact.java](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/env/br/pucrs/smart/RestArtifact.java)
+- [RestImpl.java](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/env/br/pucrs/smart/RestImpl.java)
+- [Translator.java](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/env/br/pucrs/smart/Translator.java)
+
+Crie em `src/env` um novo pacote com o nome `br.pucrs.smart.interfaces`, baixe a classe a seguir e coloque-a dentro dele.
+
+- [IAgent.java](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/env/br/pucrs/smart/interfaces/IAgent.java)
+
+Crie um agente Jason para se comunicar com o Dialogflow e coloque nele o código a seguir:
+
+```
++request(Req)
+	:true
+<-
+	.print("Recebido request ",Req," do Dialog");
+	!responder(Req);
+	.
+	
++!responder(Req)
+	: (Req == "Call Jason Agent")
+<-
+	reply("Olá, eu sou seu agente Jason, em que posso lhe ajudar?");
+	.
++!responder(Req)
+	: true
+<-
+	reply("Desculpe, não reconheço essa intenção");
+	.
+	
++!hello
+    : True
+<-
+    .print("hello world");
+    .
+
+{ include("$jacamoJar/templates/common-cartago.asl") }
+{ include("$jacamoJar/templates/common-moise.asl") }
+```
+
+Inclua o seu novo agente, o artefato de comunicação e o server no seu arquivo `.jcm`
+
+ex.
+```
+  agent communicating_agent:communicating_agent.asl{
+    focus: integration
+  }
+    
+	workspace wp{
+		artifact integration:br.pucrs.smart.IntegrationArtifact
+	}
+	
+	platform: br.pucrs.smart.RestArtifact("--main 2181 --restPort 8080")
+
+```
+
+![](src/resources/img/jcmFile.png)
+
+
+Para rodar o projeto, abra a pasta do projeto no terminal e digite o comando `gradle build` (isso pode levar algum tempo) em seguida rode o comando `gradle run`.
+
+![](src/resources/img/terminal.png)
+
+Caso queira criar imagens Docker apartir dessa aplicação crie na raiz do projeto um novo arquivo chamado `Dockerfile` e coloque nele o código a seguir.  
+**O processo para a criação da imagem é o mesmo**
+
+```
+FROM alpine
+
+ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
+ENV JACAMO_HOME=/jacamo/build
+ENV PATH $PATH:$JAVA_HOME/bin #:$JACAMO_HOME/scripts
+
+RUN apk add --update --no-cache git gradle openjdk8-jre bash fontconfig ttf-dejavu graphviz
+RUN git clone https://github.com/jacamo-lang/jacamo.git && \
+    cd jacamo && \
+    gradle config
+
+COPY . /app
+
+RUN cd app && gradle build
+
+EXPOSE 3271
+EXPOSE 3272
+EXPOSE 3273
+EXPOSE 8080
+
+WORKDIR /app
+
+
+ENTRYPOINT [ "gradle", "run" ]
+
+CMD []
+```
+
+
