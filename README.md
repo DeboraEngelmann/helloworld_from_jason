@@ -25,10 +25,11 @@ Você precisará ter instalado em seu computador:
 
 1. [Baixando e configurando projeto de integração](#baixando-e-configurando-projeto-de-integração)
 2. [Testando projeto localmente com o Postman](#testando-projeto-localmente-com-o-postman)
-3. [Criando imagem Docker](#criando-imagem-docker)
-4. [Configurando projeto GCP e subindo aplicação](#configurando-projeto-gcp-e-subindo-aplicação)
-5. [Criando intenção e configurando fulfillment no Dialogflow](#criando-intenção-e-configurando-fulfillment-no-dialogflow)
-6. [Incluindo a integração no seu projeto JaCaMo existente](#incluindo-a-integração-no-seu-projeto-jacamo-existente)
+3. [Testando projeto localmente com o ngrok](#testando-projeto-localmente-com-o-ngrok)
+4. [Criando imagem Docker](#criando-imagem-docker)
+5. [Configurando projeto GCP e subindo aplicação](#configurando-projeto-gcp-e-subindo-aplicação)
+6. [Criando intenção e configurando fulfillment no Dialogflow](#criando-intenção-e-configurando-fulfillment-no-dialogflow)
+7. [Incluindo a integração no seu projeto JaCaMo existente](#incluindo-a-integração-no-seu-projeto-jacamo-existente)
 
 ## Baixando e configurando projeto de integração
 
@@ -123,6 +124,43 @@ Esse código é um exemplo de requisição feita pelo Dialogflow. Vamos verifica
 Verifique a resposta recebida do agente.
 
 ![](src/resources/img/responsePostman.png)
+
+
+## Testando projeto localmente com o ngrok
+
+**O [ngrok](https://ngrok.com/) gera um URL seguro e instantâneo para o servidor localhost rodando na sua máquina.**  
+
+Acesse https://ngrok.com/ e clique em `Get started for free`.
+
+![](src/resources/img/homeNgrok.png)
+
+Você pode se cadastrar preenchendo o formulário, ou usar a sua conta do Google ou do Github para acessar o serviço.  
+Siga as instruções de instalação de acordo com seu sistema operacional.
+
+![](src/resources/img/installNgrok.png)
+
+Com a aplicação JaCaMo rodando (`gradle run`), abra um novo terminal e navegue até a pasta onde o `ngrok` está salvo. Rode o comando a seguir:
+```
+./ngrok http 8080
+```
+Copie o link https gerado pelo `ngrok`.
+
+![](src/resources/img/runNgrok.png)
+
+Cole esse link https copiado na aba `fullfilment` do seu agente do Dialogflow em `Webhook/URL` e clique em `Save`.  
+Para ver como criar intenções do dialogflow clique [aqui](#criando-intenção-e-configurando-fulfillment-no-dialogflow).
+
+![](src/resources/img/linkDialogflow.png)
+
+Agora, você já pode fazer chamadas diretamente do seu chatbot no Dialogflow para o seu agente Jason rodando na sua máquina.  
+
+Obs. 
+ - A limitação de uso na conta free do `ngrok` é de 40 conexões/minuto.
+ - Cada vez que rodar o `ngrok` ele gera uma nova URL, então é necessário trocar a URL no Dialogflow todas as vezes. Porém, você pode parar e reiniciar a sua aplicação JaCaMo várias vezes sem a necessidade de reiniciar a execução do `ngrok`.
+
+#### Links Úteis
+- https://ngrok.com/
+- https://ngrok.com/docs
 
 
 ## Criando imagem Docker
