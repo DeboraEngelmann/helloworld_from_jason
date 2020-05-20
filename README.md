@@ -25,11 +25,12 @@ Você precisará ter instalado em seu computador:
 
 1. [Baixando e configurando projeto de integração](#baixando-e-configurando-projeto-de-integração)
 2. [Testando projeto localmente com o Postman](#testando-projeto-localmente-com-o-postman)
-3. [Testando projeto localmente com o ngrok](#testando-projeto-localmente-com-o-ngrok)
-4. [Criando imagem Docker](#criando-imagem-docker)
-5. [Configurando projeto GCP e subindo aplicação](#configurando-projeto-gcp-e-subindo-aplicação)
-6. [Criando intenção e configurando fulfillment no Dialogflow](#criando-intenção-e-configurando-fulfillment-no-dialogflow)
-7. [Incluindo a integração no seu projeto JaCaMo existente](#incluindo-a-integração-no-seu-projeto-jacamo-existente)
+3. [Testando projeto localmente com o pagekite](#testando-projeto-localmente-com-o-pagekite)
+4. [Testando projeto localmente com o ngrok](#testando-projeto-localmente-com-o-ngrok)
+5. [Criando imagem Docker](#criando-imagem-docker)
+6. [Configurando projeto GCP e subindo aplicação](#configurando-projeto-gcp-e-subindo-aplicação)
+7. [Criando intenção e configurando fulfillment no Dialogflow](#criando-intenção-e-configurando-fulfillment-no-dialogflow)
+8. [Incluindo a integração no seu projeto JaCaMo existente](#incluindo-a-integração-no-seu-projeto-jacamo-existente)
 
 ## Baixando e configurando projeto de integração
 
@@ -125,10 +126,51 @@ Verifique a resposta recebida do agente.
 
 ![](src/resources/img/responsePostman.png)
 
+## Testando projeto localmente com o pagekite
+
+**O [pagekite](http://pagekite.net/) é uma solução open source que gera um URL seguro e instantâneo para o servidor localhost rodando na sua máquina.**  
+**Para utilizá-lo você precisa ter o [Python 2.7](https://www.python.org/download/releases/2.7/) instalado.**
+
+Acesse http://pagekite.net/ clique em `Download` e siga os passos de instalação para o seu sistema operacional
+
+![](src/resources/img/homePagekite.png)
+
+Clique em `Sign up` e informe os dados solicitados para se cadastrar.
+
+![](src/resources/img/signUpPagekite.png)
+
+Você vai receber um e-mail de ativação. Clique no link de ativação recebido no seu e-mail para poder utilizar a sua conta.
+
+Com a aplicação JaCaMo rodando (`gradle run`), abra um novo terminal e  navegue até a pasta onde o pagekit foi instalado e rode o comando.
+
+```
+python2.7 pagekite.py --signup
+```
+Siga as instruções no terminal e informe os dados solicitados pelo `pagekite`.
+
+![](src/resources/img/runPagekite.png)
+
+Caso ele esteja apontando para a porta 80, você pode parar o serviço e alterar o arquivo de configuração `.pagekite.rc` que ele cria na pasta `home` trocando o número da porta para `8080`. E logo após, rodar o comando acima novamente.
+
+![](src/resources/img/pagekiteRc.png)
+
+O link da sua aplicação será `https://<o nome do kite informado no momento da inicialização>.pagekite.me`. Você pode vêlo também acessando a sua conta em http://pagekite.net/ . Cole esse link https copiado na aba fullfilment do seu agente do Dialogflow em Webhook/URL e clique em Save.
+Para ver como criar intenções do dialogflow clique [aqui](#criando-intenção-e-configurando-fulfillment-no-dialogflow).
+
+![](src/resources/img/pagekiteFulfillment.png)
+
+Agora, você já pode fazer chamadas diretamente do seu chatbot no Dialogflow para o seu agente Jason rodando na sua máquina. 
+
+#### Links Úteis
+- http://pagekite.net/
+- http://pagekite.net/downloads
+- http://pagekite.net/support/quickstart/#firstrun
+- http://pagekite.net/support/intro/
+
 
 ## Testando projeto localmente com o ngrok
 
-**O [ngrok](https://ngrok.com/) gera um URL seguro e instantâneo para o servidor localhost rodando na sua máquina.**  
+**O [ngrok](https://ngrok.com/) é outra alternativa que também gera um URL seguro e instantâneo para o servidor localhost rodando na sua máquina.**  
 
 Acesse https://ngrok.com/ e clique em `Get started for free`.
 
@@ -380,27 +422,6 @@ dependencies {
 	implementation files('lib/Models.jar')
 		
 }
-
-
-task run (type: JavaExec, dependsOn: 'classes') {
-    description 'runs the application'
-    group ' JaCaMo'
-    main = 'jacamo.infra.JaCaMoLauncher'
-    args 'my_jacamo_project.jcm'
-    classpath sourceSets.main.runtimeClasspath
-}
-
-sourceSets {
-    main {
-        java {
-            srcDir 'src/env'
-            srcDir 'src/agt'
-        }
-    }
-}
-
-}
-
 
 task run (type: JavaExec, dependsOn: 'classes') {
     description 'runs the application'
