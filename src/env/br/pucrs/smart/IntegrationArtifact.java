@@ -41,7 +41,6 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 		System.out.println("recebido evento: " + sessionId);
 		System.out.println("Intenção: " + request);
 		if (request != null) {
-			
 			for(Map.Entry<String, String> entry : parameters.entrySet()) {
 			    String key = entry.getKey();
 			    String value = entry.getValue();
@@ -49,23 +48,19 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 				System.out.println("parameters: " + key + " : " + value);
 
 			}
-			for (OutputContexts outputContext : outputContexts) {
-				System.out.println("OutputContexts name: " + outputContext.getName());
-				System.out.println("OutputContexts lifespanCount: " + outputContext.getLifespanCount());
-				System.out.println("OutputContexts parameters: ");
-				for(Map.Entry<String, String> entry : parameters.entrySet()) {
-				    String key = entry.getKey();
-				    String value = entry.getValue();
-					System.out.println(key + " : " + value);
+			if (outputContexts != null) {
+				for (OutputContexts outputContext : outputContexts) {
+					System.out.println("OutputContexts name: " + outputContext.getName());
+					System.out.println("OutputContexts lifespanCount: " + outputContext.getLifespanCount());
+					System.out.println("OutputContexts parameters: ");
+					for(Map.Entry<String, String> entry : parameters.entrySet()) {
+						String key = entry.getKey();
+						String value = entry.getValue();
+						System.out.println(key + " : " + value);
+					}
 				}
-				
 			}
-			
-			
-			
-			
-			
-			
+
 			execInternalOp("defineRequest", request);
 			System.out.println("Definindo propriedade observável");
 		} else {
