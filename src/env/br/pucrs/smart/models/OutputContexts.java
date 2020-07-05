@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class OutputContexts {
 	String name;
 	int lifespanCount;
-	private HashMap<String, String> parameters;
+	private HashMap<String, Object> parameters;
 	
 	public String getName() {
 		return name;
@@ -23,11 +23,11 @@ public class OutputContexts {
 		this.lifespanCount = lifespanCount;
 	}
 	
-	public HashMap<String, String> getParameters() {
+	public HashMap<String, Object> getParameters() {
 		return parameters;
 	}
 	
-	public void setParameters(HashMap<String, String> parameters) {
+	public void setParameters(HashMap<String, Object> parameters) {
 		this.parameters = parameters;
 	}
 

@@ -35,15 +35,15 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 	}
 
 	@Override
-	public ResponseDialogflow processarIntencao(String sessionId, String request, HashMap<String, String> parameters, List<OutputContexts> outputContexts) {
+	public ResponseDialogflow processarIntencao(String sessionId, String request, HashMap<String, Object> parameters, List<OutputContexts> outputContexts) {
 
 		ResponseDialogflow response = new ResponseDialogflow();
 		System.out.println("recebido evento: " + sessionId);
 		System.out.println("Intenção: " + request);
 		if (request != null) {
-			for(Map.Entry<String, String> entry : parameters.entrySet()) {
+			for(Map.Entry<String, Object> entry : parameters.entrySet()) {
 			    String key = entry.getKey();
-			    String value = entry.getValue();
+			    Object value = entry.getValue();
 
 				System.out.println("parameters: " + key + " : " + value);
 
@@ -53,9 +53,9 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 					System.out.println("OutputContexts name: " + outputContext.getName());
 					System.out.println("OutputContexts lifespanCount: " + outputContext.getLifespanCount());
 					System.out.println("OutputContexts parameters: ");
-					for(Map.Entry<String, String> entry : parameters.entrySet()) {
+					for(Map.Entry<String, Object> entry : parameters.entrySet()) {
 						String key = entry.getKey();
-						String value = entry.getValue();
+						Object value = entry.getValue();
 						System.out.println(key + " : " + value);
 					}
 				}

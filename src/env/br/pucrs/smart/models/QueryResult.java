@@ -6,7 +6,7 @@ import java.util.List;
 public class QueryResult {
 	private String queryText;
 	private String action;
-	private HashMap<String, String> parameters;
+	private HashMap<String, Object> parameters;
 	private boolean allRequiredParamsPresent;
 	private String fulfillmentText;
 	List<Object> fulfillmentMessages;
@@ -58,7 +58,7 @@ public class QueryResult {
 		return languageCode;
 	}	
 
-	public HashMap<String, String> getParameters() {
+	public HashMap<String, Object> getParameters() {
 		return parameters;
 	}
 
@@ -112,7 +112,7 @@ public class QueryResult {
 		this.languageCode = languageCode;
 	}
 
-	public void setParameters(HashMap<String, String> parameters) {
+	public void setParameters(HashMap<String, Object> parameters) {
 		this.parameters = parameters;
 	}
 }
