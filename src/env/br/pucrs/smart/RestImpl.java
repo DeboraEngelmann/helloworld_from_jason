@@ -52,7 +52,7 @@ public class RestImpl extends AbstractBinder {
                 return Response.ok(gson.toJson(ResponseDialogflow)).build();
         	} else {
         		ResponseDialogflow ResponseDialogflow = new ResponseDialogflow();   
-            	ResponseDialogflow.setFulfillmentText("Desculpe, NÃ£o foi possÃ­vel encontrar o agente Jason");
+            	ResponseDialogflow.setFulfillmentText("Desculpe, Não foi possível encontrar o agente Jason");
             return Response.ok(gson.toJson(ResponseDialogflow)).build();
         	}
         } catch (Exception e) {
