@@ -7,6 +7,6 @@ import br.pucrs.smart.models.OutputContexts;
 import br.pucrs.smart.models.ResponseDialogflow;
 
 public interface IAgent {
-	public ResponseDialogflow processarIntencao(String sessionId, String request, HashMap<String, Object> parameters, List<OutputContexts> outputContexts);
+	public ResponseDialogflow processarIntencao(String responseId, String intentName, HashMap<String, Object> parameters, List<OutputContexts> outputContexts);
 }
 

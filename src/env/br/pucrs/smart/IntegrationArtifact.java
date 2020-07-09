@@ -3,18 +3,21 @@
 package br.pucrs.smart;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import com.google.gson.JsonObject;
 
 import br.pucrs.smart.interfaces.IAgent;
 import br.pucrs.smart.models.OutputContexts;
 import br.pucrs.smart.models.ResponseDialogflow;
 import cartago.*;
+import jason.asSyntax.ASSyntax;
+import jason.asSyntax.ListTerm;
 import jason.asSyntax.Literal;
+import jason.asSyntax.Term;
 
 public class IntegrationArtifact extends Artifact implements IAgent {
 	private Logger logger = Logger.getLogger("ArtefatoIntegracao." + IntegrationArtifact.class.getName());
@@ -24,48 +27,21 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 		RestImpl.setListener(this);
 	}
 
-	@INTERNAL_OPERATION
-	void defineRequest(String obsProperty) {
-		defineObsProperty("request", obsProperty);
-	}
-
 	@OPERATION
 	void reply(String response) {
 		this.jasonResponse = response;
 	}
 
 	@Override
-	public ResponseDialogflow processarIntencao(String sessionId, String request, HashMap<String, Object> parameters, List<OutputContexts> outputContexts) {
+	public ResponseDialogflow processarIntencao(String responseId, String intentName, HashMap<String, Object> parameters, List<OutputContexts> outputContexts) {
 
 		ResponseDialogflow response = new ResponseDialogflow();
-		System.out.println("recebido evento: " + sessionId);
-		System.out.println("Inten√ß√£o: " + request);
-		if (request != null) {
-			for(Map.Entry<String, Object> entry : parameters.entrySet()) {
-			    String key = entry.getKey();
-			    Object value = entry.getValue();
-
-				System.out.println("parameters: " + key + " : " + value);
-
-			}
-			if (outputContexts != null) {
-				for (OutputContexts outputContext : outputContexts) {
-					System.out.println("OutputContexts name: " + outputContext.getName());
-					System.out.println("OutputContexts lifespanCount: " + outputContext.getLifespanCount());
-					System.out.println("OutputContexts parameters: ");
-					for(Map.Entry<String, Object> entry : parameters.entrySet()) {
-						String key = entry.getKey();
-						Object value = entry.getValue();
-						System.out.println(key + " : " + value);
-					}
-				}
-			}
-
-			execInternalOp("defineRequest", request);
-			System.out.println("Definindo propriedade observ√°vel");
+		if (intentName != null) {
+			execInternalOp("createRequestBelief", responseId, intentName, parameters, outputContexts);
+			System.out.println("Definindo propriedade observavel");
 		} else {
-			System.out.println("N√£o foi poss√≠vel definir a propriedade observ√°vel");
-			response.setFulfillmentText("Inten√ß√£o n√£o reconhecida");
+			System.out.println("N„o foi possÌvel definir a propriedade observavel");
+			response.setFulfillmentText("Intens„o n„o reconhecida");
 		}
 		int i = 0;
 		while (this.jasonResponse == null && i <= 200) {
@@ -87,41 +63,67 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 		return response;
 	}
 	
-
-//	public void simStartMessage(JsonObject starMessage) {
-//		List<String> filter = Arrays.asList("id", "map");
-//		JsonObject config = starMessage.get("agent_percepts").getAsJsonObject();
-//		JsonObject map = starMessage.get("map_percepts").getAsJsonObject();
-//		// we need to ensure the token will be an atom
-//		String token = config.get("token").getAsString();
-//		config.remove("token");
-//		config.addProperty("token", "\'"+token+"\'");
-//		filter.forEach(f -> map.remove(f));
-//
-//		try {
-//			List<Percept> p = new ArrayList<Percept>();
-//			p.addAll(Translator.entryToPercept(config.entrySet()));
-//			p.addAll(Translator.entryToPercept(map.entrySet()));
-//
-//			execInternalOp("updatePerceptions", null, p, null);
-//		} catch (ParseException e) {
-//			logger.info("failed to parse initial percetions: " + e.getMessage());
-//		}
-//	}
-//	
-//	@INTERNAL_OPERATION
-//	private void updatePerceptions(Collection<Percept> previousPercepts, Collection<Percept> percepts,
-//			List<String> orderPercept) {
-//		if (previousPercepts == null) {// should add all new perceptions
-//			for (Percept percept : percepts) {
-//				try {
-//					Literal literal = Translator.perceptToLiteral(percept);
-//					defineObsProperty(literal.getFunctor(), (Object[]) literal.getTermsArray());
-//				} catch (JasonException e) {
-//					logger.info("Failed to parse percept to literal: " + e.getMessage());
-//				}
-//			}
-//		}
-//	}
-
+	// return a list of param(Key1, Value1)
+	ListTerm createParamBelief(HashMap<String, Object> parameters) {
+		Collection<Term> terms = new LinkedList<Term>();
+		for(Map.Entry<String, Object> entry : parameters.entrySet()) {
+		    String key = entry.getKey();
+		    Object value = entry.getValue();
+		    Literal l = ASSyntax.createLiteral("param", ASSyntax.createString(key));
+		    if (value instanceof String) {
+		    	l.addTerm(ASSyntax.createString(value));
+		    	terms.add(l);
+		    } else if (value instanceof ArrayList){
+		    	ArrayList<String> valueArr = (ArrayList<String>) value;
+		    	Collection<Term> valuesInTerms = new LinkedList<Term>();
+		    	for (String element : valueArr) {
+		    		valuesInTerms.add(ASSyntax.createString(element));
+				}
+		    	l.addTerm(ASSyntax.createList(valuesInTerms));
+		    	terms.add(l);
+		    } else if (value instanceof Integer){
+		    	Integer valueInt = (Integer) value;
+		    	l.addTerm(ASSyntax.createNumber(valueInt));
+		    	terms.add(l);
+		    } else if (value instanceof Double){
+		    	Double valueDoub = (Double) value;
+		    	l.addTerm(ASSyntax.createNumber(valueDoub));
+		    	terms.add(l);
+		    } else {
+		    	
+		    	System.out.println("Valor do par‚metro " + key + " informados em formato desconhecido" + value.getClass());
+		    }
+		}
+		return ASSyntax.createList(terms);
+	}
+	
+	
+	//return a list of context(Name, LifespanCount, [param(Key2, Value2), param(Key3, Value3)])
+	ListTerm createContextBelief(List<OutputContexts> outputContexts) {
+		Collection<Term> terms = new LinkedList<Term>();
+		for (OutputContexts outputContext : outputContexts) {
+			Literal l = ASSyntax.createLiteral("context", ASSyntax.createString(getContextName(outputContext.getName())));
+			l.addTerm(ASSyntax.createString(outputContext.getLifespanCount()));
+			ListTerm parametersList = createParamBelief(outputContext.getParameters());
+			l.addTerm(parametersList);
+			terms.add(l);
+		}
+		
+		return ASSyntax.createList(terms);			
+	}
+	
+	String getContextName(String context) {
+            String contextName = context.substring(context.indexOf("/contexts/")+10, context.length());
+            return contextName;
+    }
+	
+	//add to belief base a request(ResponseId, IntentName, [param(Key, Value), param(Key1, Value1)], [context(Name, LifespanCount, [param(Key2, Value2), param(Key3, Value3)])])
+	@INTERNAL_OPERATION
+	void createRequestBelief(String responseId, String intentName, HashMap<String, Object> parameters, List<OutputContexts> outputContexts) {
+		ListTerm contextsList = null;
+		if (outputContexts != null) {
+			contextsList = createContextBelief(outputContexts);
+		}
+		defineObsProperty("request", ASSyntax.createString(responseId), ASSyntax.createString(intentName), createParamBelief(parameters), contextsList);
+	}
 }

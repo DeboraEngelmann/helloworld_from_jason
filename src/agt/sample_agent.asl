@@ -1,19 +1,43 @@
-+request(Req)
++request(ResponseId, IntentName, Params, Contexts)
 	:true
 <-
-	.print("Recebido request ",Req," do Dialog");
-	!responder(Req);
+	.print("Recebido request ",IntentName," do Dialog");
+	!responder(ResponseId, IntentName, Params, Contexts);
 	.
 	
-+!responder(Req)
-	: (Req == "Call Jason Agent")
++!responder(ResponseId, IntentName, Params, Contexts)
+	: (IntentName == "Call Jason Agent")
 <-
-	reply("OlÃ¡, eu sou seu agente Jason, em que posso lhe ajudar?");
+	reply("Olá, eu sou seu agente Jason, em que posso lhe ajudar?");
 	.
-+!responder(Req)
+	
++!responder(ResponseId, IntentName, Params, Contexts)
+	: (IntentName == "Call With Contexts and Parameters")
+<-
+	.print("Os contextos e parâmetros serão listados a seguir.");
+	!printContexts(Contexts);
+	!printParameters(Params);
+	reply("Olá, eu sou seu agente Jason, recebi seus contextos e parâmetros");
+	.
+	
++!responder(ResponseId, IntentName, Params, Contexts)
 	: true
 <-
-	reply("Desculpe, nÃ£o reconheÃ§o essa intenÃ§Ã£o");
+	reply("Desculpe, não reconheço essa intensão");
+	.
+
++!printContexts([]).
++!printContexts([Context|List])
+<-
+	.print(Context);
+	!printContexts(List);
+	.
+
++!printParameters([]).
++!printParameters([Param|List])
+<-
+	.print(Param)
+	!printParameters(List)
 	.
 	
 +!hello
