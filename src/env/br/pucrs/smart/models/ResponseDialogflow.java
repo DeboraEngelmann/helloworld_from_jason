@@ -6,11 +6,11 @@ import java.util.List;
 public class ResponseDialogflow {
 	
 public ResponseDialogflow() {
-	this.outputContexts = new ArrayList<String>();
+	this.outputContexts = new ArrayList<OutputContexts>();
 }
 	private String fulfillmentText;
 	
-	private List<String> outputContexts;
+	private List<OutputContexts> outputContexts;
 
 	public String getFulfillmentText() {
 		return fulfillmentText;
@@ -20,16 +20,16 @@ public ResponseDialogflow() {
 		this.fulfillmentText = fulfillmentText;
 	}
 
-	public List<String> getOutputContexts() {
+	public List<OutputContexts> getOutputContexts() {
 		return outputContexts;
 	}
 
-	public void setOutputContexts(List<String> outputContexts) {
+	public void setOutputContexts(List<OutputContexts> outputContexts) {
 		this.outputContexts = outputContexts;
 	}
 
-	public void addOutputContexts(String ouString) {
-		this.outputContexts.add(ouString);
+	public void addOutputContexts(OutputContexts outputContext) {
+		this.outputContexts.add(outputContext);
 	}
 	
 }

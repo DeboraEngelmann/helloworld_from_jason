@@ -22,14 +22,29 @@ import jason.asSyntax.Term;
 public class IntegrationArtifact extends Artifact implements IAgent {
 	private Logger logger = Logger.getLogger("ArtefatoIntegracao." + IntegrationArtifact.class.getName());
 	String jasonResponse = null;
-
+	OutputContexts jasonOutputContext = null;
+	
 	void init() {
 		RestImpl.setListener(this);
 	}
-
+	
+	@OPERATION
+	void replyWithContext(String response, OutputContexts context) {
+		this.jasonResponse = response;
+		this.jasonOutputContext = context;
+	}
+	
 	@OPERATION
 	void reply(String response) {
-		this.jasonResponse = response;
+		this.jasonResponse= response;
+	}
+	
+	@OPERATION
+	void contextBuilder(String responseId, String contextName, OpFeedbackParam<OutputContexts> outputContext) {
+	    OutputContexts context = new OutputContexts();
+	    context.setName("projects/coordinator-uturga/agent/sessions/" + responseId + "/contexts/" + contextName);
+	    context.setLifespanCount(1);
+	    outputContext.set(context);
 	}
 
 	@Override
@@ -55,6 +70,10 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 		if (this.jasonResponse != null) {
 			System.out.println("jasonResponse " + this.jasonResponse);
 			response.setFulfillmentText(this.jasonResponse);
+			if (this.jasonOutputContext != null) {
+				response.addOutputContexts(this.jasonOutputContext);
+				this.jasonOutputContext = null;
+			}
 			this.jasonResponse = null;
 		} else {
 			System.out.println("Sem jasonResponse");

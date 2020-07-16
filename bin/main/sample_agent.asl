@@ -21,6 +21,15 @@
 	.
 	
 +!responder(ResponseId, IntentName, Params, Contexts)
+	: (IntentName == "Reply With Context")
+<-
+	.print("O contexto será criado a seguir.");
+	contextBuilder(ResponseId, "contexto-teste", Context);
+	.print("Contexo criado: ", Context);
+	replyWithContext("Olá, eu sou seu agente Jason, e estou respondendo com contexto", Context);
+	.
+	
++!responder(ResponseId, IntentName, Params, Contexts)
 	: true
 <-
 	reply("Desculpe, não reconheço essa intensão");
