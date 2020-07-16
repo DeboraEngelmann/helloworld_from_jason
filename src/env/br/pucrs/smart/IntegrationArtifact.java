@@ -23,6 +23,7 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 	private Logger logger = Logger.getLogger("ArtefatoIntegracao." + IntegrationArtifact.class.getName());
 	String jasonResponse = null;
 	OutputContexts jasonOutputContext = null;
+	String session = null;
 	
 	void init() {
 		RestImpl.setListener(this);
@@ -42,14 +43,14 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 	@OPERATION
 	void contextBuilder(String responseId, String contextName, OpFeedbackParam<OutputContexts> outputContext) {
 	    OutputContexts context = new OutputContexts();
-	    context.setName("projects/coordinator-uturga/agent/sessions/" + responseId + "/contexts/" + contextName);
+	    context.setName(this.session + "/contexts/" + contextName);
 	    context.setLifespanCount(1);
 	    outputContext.set(context);
 	}
 
 	@Override
-	public ResponseDialogflow processarIntencao(String responseId, String intentName, HashMap<String, Object> parameters, List<OutputContexts> outputContexts) {
-
+	public ResponseDialogflow processarIntencao(String responseId, String intentName, HashMap<String, Object> parameters, List<OutputContexts> outputContexts, String session) {
+		this.session = session;
 		ResponseDialogflow response = new ResponseDialogflow();
 		if (intentName != null) {
 			execInternalOp("createRequestBelief", responseId, intentName, parameters, outputContexts);

@@ -48,7 +48,8 @@ public class RestImpl extends AbstractBinder {
         		ResponseDialogflow ResponseDialogflow = mas.processarIntencao(requestDialogflow.getResponseId(),
         																	  requestDialogflow.getQueryResult().getIntent().getDisplayName(),
         																	  requestDialogflow.getQueryResult().getParameters(),
-        																	  requestDialogflow.getQueryResult().getOutputContexts());
+        																	  requestDialogflow.getQueryResult().getOutputContexts(),
+        																	  requestDialogflow.getSession());
                 return Response.ok(gson.toJson(ResponseDialogflow)).build();
         	} else {
         		ResponseDialogflow ResponseDialogflow = new ResponseDialogflow();   
