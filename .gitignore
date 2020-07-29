@@ -1,7 +1,6 @@
 # Eclipse files
 .classpath
 .settings
-.project
 bin
 build
 
