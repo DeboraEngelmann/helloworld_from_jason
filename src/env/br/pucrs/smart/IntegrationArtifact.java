@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import br.pucrs.smart.interfaces.IAgent;
+import br.pucrs.smart.models.FollowupEventInput;
 import br.pucrs.smart.models.OutputContexts;
 import br.pucrs.smart.models.ResponseDialogflow;
 import cartago.*;
@@ -24,9 +25,18 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 	String jasonResponse = null;
 	OutputContexts jasonOutputContext = null;
 	String session = null;
+	FollowupEventInput followupEventInput = null;
 	
 	void init() {
 		RestImpl.setListener(this);
+	}
+	
+	@OPERATION
+	void replyWithEvent(String response, String eventName) {
+		this.jasonResponse = response;
+		this.followupEventInput = new FollowupEventInput();
+		this.followupEventInput.setName(eventName);
+		this.followupEventInput.setLanguageCode("pt-BR");
 	}
 	
 	@OPERATION
@@ -74,6 +84,10 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 			if (this.jasonOutputContext != null) {
 				response.addOutputContexts(this.jasonOutputContext);
 				this.jasonOutputContext = null;
+			}
+			if (this.followupEventInput != null) {
+				response.setFollowupEventInput(this.followupEventInput);
+				this.followupEventInput = null;
 			}
 			this.jasonResponse = null;
 		} else {
@@ -124,8 +138,10 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 		for (OutputContexts outputContext : outputContexts) {
 			Literal l = ASSyntax.createLiteral("context", ASSyntax.createString(getContextName(outputContext.getName())));
 			l.addTerm(ASSyntax.createString(outputContext.getLifespanCount()));
-			ListTerm parametersList = createParamBelief(outputContext.getParameters());
-			l.addTerm(parametersList);
+			if (outputContext.getParameters() != null) {
+				ListTerm parametersList = createParamBelief(outputContext.getParameters());
+				l.addTerm(parametersList);
+			}
 			terms.add(l);
 		}
 		
@@ -141,9 +157,13 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 	@INTERNAL_OPERATION
 	void createRequestBelief(String responseId, String intentName, HashMap<String, Object> parameters, List<OutputContexts> outputContexts) {
 		ListTerm contextsList = null;
+		ListTerm paramBelief = null;
 		if (outputContexts != null) {
 			contextsList = createContextBelief(outputContexts);
 		}
-		defineObsProperty("request", ASSyntax.createString(responseId), ASSyntax.createString(intentName), createParamBelief(parameters), contextsList);
+		if (parameters != null) {
+			paramBelief = createParamBelief(parameters);
+		}
+		defineObsProperty("request", ASSyntax.createString(responseId), ASSyntax.createString(intentName), paramBelief, contextsList);
 	}
 }

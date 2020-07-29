@@ -9,7 +9,7 @@ public ResponseDialogflow() {
 	this.outputContexts = new ArrayList<OutputContexts>();
 }
 	private String fulfillmentText;
-	
+	private FollowupEventInput followupEventInput;
 	private List<OutputContexts> outputContexts;
 
 	public String getFulfillmentText() {
@@ -30,6 +30,14 @@ public ResponseDialogflow() {
 
 	public void addOutputContexts(OutputContexts outputContext) {
 		this.outputContexts.add(outputContext);
+	}
+
+	public FollowupEventInput getFollowupEventInput() {
+		return followupEventInput;
+	}
+
+	public void setFollowupEventInput(FollowupEventInput followupEventInput) {
+		this.followupEventInput = followupEventInput;
 	}
 	
 }

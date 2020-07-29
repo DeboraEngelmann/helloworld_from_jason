@@ -10,6 +10,19 @@
 <-
 	reply("Olá, eu sou seu agente Jason, em que posso lhe ajudar?");
 	.
+
+	
++!responder(ResponseId, IntentName, Params, Contexts)
+	: (IntentName == "Call Intent By Event")
+<-
+	replyWithEvent("Respondendo com um evento", "testEvent");
+	.
+
++!responder(ResponseId, IntentName, Params, Contexts)
+	: (IntentName == "Intent Called By Event")
+<-
+	reply("Respondendo a uma intenção chamada por um evento");
+	.
 	
 +!responder(ResponseId, IntentName, Params, Contexts)
 	: (IntentName == "Call With Contexts and Parameters")
@@ -18,6 +31,14 @@
 	!printContexts(Contexts);
 	!printParameters(Params);
 	reply("Olá, eu sou seu agente Jason, recebi seus contextos e parâmetros");
+	.
+	
++!responder(ResponseId, IntentName, Params, Contexts)
+	: (IntentName == "Call With Contexts")
+<-
+	.print("Os contextos serão listados a seguir.");
+	!printContexts(Contexts);
+	reply("Olá, eu sou seu agente Jason, recebi seus contextos");
 	.
 	
 +!responder(ResponseId, IntentName, Params, Contexts)

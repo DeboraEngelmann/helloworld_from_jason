@@ -460,7 +460,6 @@ Baixe as classes a seguir e coloque no pacote recém criado:
 - [RestAppConfig.java](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/env/br/pucrs/smart/RestAppConfig.java)
 - [RestArtifact.java](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/env/br/pucrs/smart/RestArtifact.java)
 - [RestImpl.java](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/env/br/pucrs/smart/RestImpl.java)
-- [Translator.java](https://github.com/DeboraEngelmann/helloworld_from_jason/blob/master/src/env/br/pucrs/smart/Translator.java)
 
 Crie em `src/env` um novo pacote com o nome `br.pucrs.smart.interfaces`, baixe a classe a seguir e coloque-a dentro dele.
 
