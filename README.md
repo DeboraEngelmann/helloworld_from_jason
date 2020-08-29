@@ -3,8 +3,9 @@
 By [Débora Engelmann](https://github.com/DeboraEngelmann), 
 [Juliana Damasio Oliveira](https://github.com/julianadamasio), 
 [Olimar Teixeira Borges](https://github.com/olimarborges), 
-[Tabajara Krausburg](https://github.com/TabajaraKrausburg) e 
-[Marivaldo Vivan](https://github.com/Vivannaboa)
+[Tabajara Krausburg](https://github.com/TabajaraKrausburg), 
+[Marivaldo Vivan](https://github.com/Vivannaboa) and
+[Rafael H. Bordini](https://github.com/rbordini)
 
 Você encontrará toda a documentação necessária na nossa [Wiki](https://github.com/DeboraEngelmann/helloworld_from_jason/wiki).
 
