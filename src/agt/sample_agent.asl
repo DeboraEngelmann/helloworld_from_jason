@@ -45,7 +45,7 @@
 	: (IntentName == "Reply With Context")
 <-
 	.print("O contexto será criado a seguir.");
-	contextBuilder(ResponseId, "contexto-teste", Context);
+	contextBuilder(ResponseId, "contexto-teste", "1", Context);
 	.print("Contexo criado: ", Context);
 	replyWithContext("Olá, eu sou seu agente Jason, e estou respondendo com contexto", Context);
 	.

@@ -51,10 +51,10 @@ public class IntegrationArtifact extends Artifact implements IAgent {
 	}
 	
 	@OPERATION
-	void contextBuilder(String responseId, String contextName, OpFeedbackParam<OutputContexts> outputContext) {
+	void contextBuilder(String responseId, String contextName, String lifespanCount, OpFeedbackParam<OutputContexts> outputContext) {
 	    OutputContexts context = new OutputContexts();
 	    context.setName(this.session + "/contexts/" + contextName);
-	    context.setLifespanCount(1);
+	    context.setLifespanCount(Integer.parseInt(lifespanCount));
 	    outputContext.set(context);
 	}
 
