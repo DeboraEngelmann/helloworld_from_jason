@@ -7,7 +7,7 @@ By [Débora Engelmann](https://github.com/DeboraEngelmann),
 [Marivaldo Vivan](https://github.com/Vivannaboa) and
 [Rafael H. Bordini](https://github.com/rbordini)
 
-Você encontrará toda a documentação necessária na nossa [Wiki](https://github.com/DeboraEngelmann/helloworld_from_jason/wiki).
+You will find all the necessary documentation on our [Wiki](https://github.com/DeboraEngelmann/helloworld_from_jason/wiki).
 
-> Parte do código utilizado nesse projeto é de autoria de [Jomi F. Hubner](https://github.com/jomifred) e [Cleber Jorge Amaral](https://github.com/cleberjamaral) Disponível em [JaCaMo-Rest](https://github.com/jacamo-lang/jacamo-rest).
+> Part of the code used in this project is authored by [Jomi F. Hubner](https://github.com/jomifred) and [Cleber Jorge Amaral](https://github.com/cleberjamaral) available in [JaCaMo-Rest](https://github.com/jacamo-lang/jacamo-rest).
 
