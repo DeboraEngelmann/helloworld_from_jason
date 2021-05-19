@@ -1,59 +1,59 @@
 +request(ResponseId, IntentName, Params, Contexts)
 	:true
 <-
-	.print("Recebido request ",IntentName," do Dialog");
+	.print("Request received ",IntentName," of Dialog");
 	!responder(ResponseId, IntentName, Params, Contexts);
 	.
 	
 +!responder(ResponseId, IntentName, Params, Contexts)
 	: (IntentName == "Call Jason Agent")
 <-
-	reply("Olá, eu sou seu agente Jason, em que posso lhe ajudar?");
+	reply("Hello, I am your agent Jason, I can help you?");
 	.
 
 	
 +!responder(ResponseId, IntentName, Params, Contexts)
 	: (IntentName == "Call Intent By Event")
 <-
-	replyWithEvent("Respondendo com um evento", "testEvent");
+	replyWithEvent("Answering with an event", "testEvent");
 	.
 
 +!responder(ResponseId, IntentName, Params, Contexts)
 	: (IntentName == "Intent Called By Event")
 <-
-	reply("Respondendo a uma intenção chamada por um evento");
+	reply("Answering to an intention called by an event");
 	.
 	
 +!responder(ResponseId, IntentName, Params, Contexts)
 	: (IntentName == "Call With Contexts and Parameters")
 <-
-	.print("Os contextos e parâmetros serão listados a seguir.");
+	.print("The contexts and parameters will be listed below.");
 	!printContexts(Contexts);
 	!printParameters(Params);
-	reply("Olá, eu sou seu agente Jason, recebi seus contextos e parâmetros");
+	reply("Hello, I'm your agent Jason, I received your contexts and parameters");
 	.
 	
 +!responder(ResponseId, IntentName, Params, Contexts)
 	: (IntentName == "Call With Contexts")
 <-
-	.print("Os contextos serão listados a seguir.");
+	.print("The contexts will be listed below.");
 	!printContexts(Contexts);
-	reply("Olá, eu sou seu agente Jason, recebi seus contextos");
+	reply("Hello, I’m your agent Jason, I received your contexts");
 	.
 	
 +!responder(ResponseId, IntentName, Params, Contexts)
 	: (IntentName == "Reply With Context")
 <-
-	.print("O contexto será criado a seguir.");
-	contextBuilder(ResponseId, "contexto-teste", "1", Context);
-	.print("Contexo criado: ", Context);
-	replyWithContext("Olá, eu sou seu agente Jason, e estou respondendo com contexto", Context);
+	.print("The context will be created next.");
+	contextBuilder(ResponseId, "test context", "1", Context);
+	.print("Context created: ", Context);
+	replyWithContext("Hello, I am your agent Jason, and I am responding with context", Context);
 	.
 	
 +!responder(ResponseId, IntentName, Params, Contexts)
 	: true
 <-
-	reply("Desculpe, não reconheço essa intensão");
+	reply("Sorry, I do not recognize this intention");
 	.
 
 +!printContexts([]).
